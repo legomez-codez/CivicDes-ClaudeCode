@@ -16,6 +16,8 @@ export interface TractProperties {
   age_vulnerability: number;
   no_vehicle_rate: number;
   dist_km: number;
+  centroid_lat?: number;
+  centroid_lon?: number;
   outlet_density?: number;
   outlet_count?: number;
 }

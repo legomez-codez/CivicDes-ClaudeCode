@@ -64,6 +64,8 @@ def compute_gap_scores(
             "dist_km": round(dist_km, 3),
             "gap_score_raw": gap_score_raw,
             "name": vuln.get("name", row.get("NAME", geoid)),
+            "centroid_lat": round(cy, 5),
+            "centroid_lon": round(cx, 5),
         })
 
     if not results:
@@ -89,6 +91,8 @@ def compute_gap_scores(
                 "age_vulnerability": r["age_vulnerability"],
                 "no_vehicle_rate": r["no_vehicle_rate"],
                 "dist_km": r["dist_km"],
+                "centroid_lat": r["centroid_lat"],
+                "centroid_lon": r["centroid_lon"],
             },
         })
 
@@ -122,6 +126,7 @@ def compute_news_gap_scores(
         gap_raw = vulnerability / max(outlet_density, 0.1)
         gap_score = round(min(gap_raw / GLOBAL_MAX * 100, 100), 2)
 
+        centroid = row.geometry.centroid
         features.append({
             "type": "Feature",
             "geometry": row.geometry.__geo_interface__,
@@ -136,6 +141,8 @@ def compute_news_gap_scores(
                 "dist_km": 0.0,
                 "outlet_density": outlet_density,
                 "outlet_count": outlet_count,
+                "centroid_lat": round(centroid.y, 5),
+                "centroid_lon": round(centroid.x, 5),
             },
         })
 
@@ -158,6 +165,8 @@ def get_top_tracts(geojson: dict, n: int = 5) -> list[dict]:
             "age_vulnerability": p["age_vulnerability"],
             "no_vehicle_rate": p["no_vehicle_rate"],
             "dist_km": p["dist_km"],
+            "centroid_lat": p.get("centroid_lat"),
+            "centroid_lon": p.get("centroid_lon"),
         }
         if "outlet_density" in p:
             entry["outlet_density"] = p["outlet_density"]

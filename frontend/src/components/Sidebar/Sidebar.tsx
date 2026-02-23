@@ -5,6 +5,7 @@ import { ScoreLegend } from './ScoreLegend';
 import { TopTracts } from './TopTracts';
 import { AboutPanel } from './AboutPanel';
 import { NewsDesertBadge } from './NewsDesertBadge';
+import { DataSourcePanel } from './DataSourcePanel';
 import { LayerToggle } from '../Controls/LayerToggle';
 import { useTopTracts } from '../../hooks/useGapData';
 import { useNewsScore } from '../../hooks/useNewsScore';
@@ -73,12 +74,17 @@ export function Sidebar({
 
         {/* Top tracts */}
         {selectedCounty?.fips && !isLoadingGap && (
-          <TopTracts tracts={topTracts} isLoading={loadingTop} />
+          <TopTracts tracts={topTracts} isLoading={loadingTop} activeLayer={activeLayer} />
         )}
 
         {/* Legend */}
         {selectedCounty?.fips && !isLoadingGap && (
           <ScoreLegend activeLayer={activeLayer} />
+        )}
+
+        {/* Data sources & methodology */}
+        {selectedCounty?.fips && !isLoadingGap && (
+          <DataSourcePanel activeLayer={activeLayer} />
         )}
 
         {/* About panel — shown when no county is selected */}
