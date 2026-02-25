@@ -47,7 +47,8 @@ def compute_gap_scores(
         cx, cy = centroid.x, centroid.y  # lon, lat
 
         if poi_points is not None:
-            nearest_poi, _ = nearest_points(Point(cx, cy), poi_points)
+            # nearest_points(g1, g2) → (pt_on_g1, pt_on_g2); we want the POI side (g2)
+            _, nearest_poi = nearest_points(Point(cx, cy), poi_points)
             dist_km = haversine_km(cy, cx, nearest_poi.y, nearest_poi.x)
         else:
             dist_km = 999.0

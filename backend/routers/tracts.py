@@ -47,10 +47,15 @@ async def reverse_geocode(
         return _NULL_RESULT
 
     props = features[0].get("properties", {})
+    # When Photon returns a city/place boundary feature, the city name is in "name"
+    # rather than the "city" field. Use it as fallback.
+    city = (props.get("city") or props.get("town") or props.get("village")
+            or (props.get("name") if props.get("osm_key") == "place" else None)
+            or None)
     result = {
-        "neighbourhood": props.get("district") or props.get("name") or None,
+        "neighbourhood": props.get("district") or None,
         "postcode": props.get("postcode") or None,
-        "city": props.get("city") or props.get("town") or props.get("village") or None,
+        "city": city,
         "state": props.get("state") or None,
     }
 
